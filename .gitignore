@@ -1,0 +1,19 @@
+# Virtual environment
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Secrets - never commit real credentials
+.env
+
+# Local runtime data
+tasks.db
+drafts/
+demo/_exploit_demo.db
+
+# macOS
+.DS_Store

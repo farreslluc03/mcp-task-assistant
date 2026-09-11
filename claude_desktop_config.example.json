@@ -1,0 +1,13 @@
+{
+  "//": "Example MCP configuration for Claude Desktop. See README.md for the exact path to your real config file, and how to fill in <ABSOLUTE_PATH_TO_PROJECT>.",
+  "mcpServers": {
+    "task-assistant": {
+      "command": "<ABSOLUTE_PATH_TO_PROJECT>/.venv/bin/python",
+      "args": [
+        "-m",
+        "mcp_task_assistant.server"
+      ],
+      "cwd": "<ABSOLUTE_PATH_TO_PROJECT>"
+    }
+  }
+}
