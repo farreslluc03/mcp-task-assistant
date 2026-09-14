@@ -24,26 +24,35 @@ Claude Desktop launches this same command for you as a subprocess - see
 README.md for the exact configuration.
 
 Citation:
-    The overall server shape here - creating a ``FastMCP`` instance, using
-    the ``@mcp.tool()`` / ``@mcp.prompt()`` decorators, and calling
+    The overall server shape here - creating a server instance, using the
+    ``@mcp.tool()`` / ``@mcp.prompt()`` decorators, and calling
     ``mcp.run()`` in ``if __name__ == "__main__"`` - follows the Quickstart
     example in the official MCP Python SDK README:
     https://github.com/modelcontextprotocol/python-sdk
     All tool/prompt bodies, storage, security, and email logic below are
     original code written for this assignment.
+
+    Note on the import below: MCP Python SDK v2 renamed the ``FastMCP``
+    class to ``MCPServer`` (same decorator API otherwise) - see
+    https://py.sdk.modelcontextprotocol.io/v2/migration/. The try/except
+    supports either SDK major version, since ``requirements.txt`` does not
+    pin an exact one.
 """
 from __future__ import annotations
 
 from typing import Optional
 
-from mcp.server.fastmcp import FastMCP
+try:
+    from mcp.server.mcpserver import MCPServer as _MCPServerClass  # SDK v2+
+except ModuleNotFoundError:
+    from mcp.server.fastmcp import FastMCP as _MCPServerClass  # SDK v1
 
 from .config import settings
 from .email_tool import EmailSendError, send_or_draft_email
 from .security import RateLimitExceededError, SlidingWindowRateLimiter
 from .storage import TaskStore, ValidationError
 
-mcp = FastMCP("task-assistant")
+mcp = _MCPServerClass("task-assistant")
 
 _store = TaskStore(settings.database_path)
 _email_rate_limiter = SlidingWindowRateLimiter(
